@@ -65,7 +65,7 @@ try:
         version_src = rsrc
 except ImportError:
     # Try backported to PY<37 `importlib_resources`.
-    print("Python older than 3.7 detected. ")
+    # print("Python older than 3.7 detected. ")
     try:
         import importlib_resources as pkg_resources
         with pkg_resources.path('bagpy', 'version') as rsrc:
@@ -186,7 +186,7 @@ class bagreader:
 
     '''
 
-    def __init__(self , bagfile , verbose=True , tmp = False):
+    def __init__(self , bagfile , verbose=True , out_dir=None, tmp=False):
         self.bagfile = bagfile
         
         slashindices = find(bagfile, '/')
@@ -220,6 +220,9 @@ class bagreader:
         self.end_time = self.reader.get_end_time()
 
         self.datafolder = bagfile[0:-4]
+
+        if out_dir:
+            self.datafolder = os.path.join(out_dir, bagfile.split('/')[-1][0:-4])
 
         if tmp:
             self.datafolder = '/tmp/' + bagfile.split('/')[-1][0:-4]
